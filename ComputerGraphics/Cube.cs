@@ -111,87 +111,52 @@ namespace ComputerGraphics
             Math3D.Point3D point0 = new Math3D.Point3D(img.Width / 2 - drawOrigin.X, drawOrigin.Y - img.Height / 2, 0); //Used for reference
 
             //Zoom factor is set with the monitor width to keep the cube from being distorted
-            double zoom = (double)Screen.PrimaryScreen.Bounds.Width / 1.5;
+            double zoom = Screen.PrimaryScreen.Bounds.Width / 1.5;
 
             //Set up the cube
             Math3D.Point3D[] cubePoints = fillCubeVertices(width, height, depth);
 
-            //Calculate the camera Z position to stay constant despite rotation
-            Math3D.Point3D anchorPoint = (Math3D.Point3D)cubePoints[4]; //anchor point
-            double cameraZ = -(((anchorPoint.X - cubeOrigin.X) * zoom) / cubeOrigin.X) + anchorPoint.Z;
-            camera1.Position = new Math3D.Point3D(cubeOrigin.X, cubeOrigin.Y, cameraZ);
-
             //Apply Rotations, moving the cube to a corner then back to middle
             cubePoints = Math3D.Translate(cubePoints, cubeOrigin, point0);
-            cubePoints = Math3D.RotateX(cubePoints, xRotation); //The order of these
-            cubePoints = Math3D.RotateY(cubePoints, yRotation); //rotations is the source
             cubePoints = Math3D.RotateZ(cubePoints, zRotation); //of Gimbal Lock
+            cubePoints = Math3D.RotateY(cubePoints, yRotation); //rotations is the source
+            cubePoints = Math3D.RotateX(cubePoints, xRotation); //The order of these
             cubePoints = Math3D.Translate(cubePoints, point0, cubeOrigin);
 
             //Convert 3D Points to 2D
+            var degrees = 35;
+            double cDegrees = (Math.PI * degrees) / 180.0;
             for (int i = 0; i < point3D.Length; i++)
             {
                 var vec = cubePoints[i];
-                if (vec.Z - camera1.Position.Z >= 0)
-                {
-                    point3D[i].X = (int)((double)-(vec.X - camera1.Position.X) / (-0.1f) * zoom) + drawOrigin.X;
-                    point3D[i].Y = (int)((double)(vec.Y - camera1.Position.Y) / (-0.1f) * zoom) + drawOrigin.Y;
-                }
-                else
-                {
-                    //tmpOrigin.X = (int)((double)(cubeOrigin.X - camera1.Position.X) / (double)(cubeOrigin.Z - camera1.Position.Z) * zoom) + drawOrigin.X;
-                    //tmpOrigin.Y = (int)((double)-(cubeOrigin.Y - camera1.Position.Y) / (double)(cubeOrigin.Z - camera1.Position.Z) * zoom) + drawOrigin.Y;
 
-                    point3D[i].X = (float)((vec.X - camera1.Position.X) / (vec.Z - camera1.Position.Z) * zoom + drawOrigin.X);
-                    point3D[i].Y = (float)(-(vec.Y - camera1.Position.Y) / (vec.Z - camera1.Position.Z) * zoom + drawOrigin.Y);
-
-                    point3D[i].X = (int)point3D[i].X;
-                    point3D[i].Y = (int)point3D[i].Y;
-                }
+                point3D[i].X = (float)(Math.Cos(cDegrees) * vec.X - Math.Cos(cDegrees) * vec.Y) + drawOrigin.X;
+                point3D[i].Y = (float)(Math.Sin(cDegrees) * vec.X + Math.Sin(cDegrees) * vec.Y - vec.Z) + drawOrigin.Y;
             }
 
-            Graphics g = Graphics.FromImage(img);
-            Pen pen = new Pen(Color.Black, 2);
+            var g = Graphics.FromImage(img);
+            Pen pen = new Pen(Color.Black, 1);
 
-            //Back Face
-            g.DrawLine(pen, point3D[0], point3D[1]);
-            g.DrawLine(pen, point3D[1], point3D[2]);
-            g.DrawLine(pen, point3D[2], point3D[3]);
-            g.DrawLine(pen, point3D[3], point3D[0]);
+            for (int i = 0; i < 6; i++)
+            {
+                g.FillPolygon(new SolidBrush(Color.WhiteSmoke), FaceCube(point3D, i));
+            }
 
-            //Front Face
-            g.DrawLine(pen, point3D[4], point3D[5]);
-            g.DrawLine(pen, point3D[5], point3D[6]);
-            g.DrawLine(pen, point3D[6], point3D[7]);
-            g.DrawLine(pen, point3D[7], point3D[4]);
-
-            //Right Face
-            g.DrawLine(pen, point3D[8], point3D[9]);
-            g.DrawLine(pen, point3D[9], point3D[10]);
-            g.DrawLine(pen, point3D[10], point3D[11]);
-            g.DrawLine(pen, point3D[11], point3D[8]);
-
-            //Left Face
-            g.DrawLine(pen, point3D[12], point3D[13]);
-            g.DrawLine(pen, point3D[13], point3D[14]);
-            g.DrawLine(pen, point3D[14], point3D[15]);
-            g.DrawLine(pen, point3D[15], point3D[12]);
-
-            //Bottom Face
-            g.DrawLine(pen, point3D[16], point3D[17]);
-            g.DrawLine(pen, point3D[17], point3D[18]);
-            g.DrawLine(pen, point3D[18], point3D[19]);
-            g.DrawLine(pen, point3D[19], point3D[16]);
-
-            //Top Face
-            g.DrawLine(pen, point3D[20], point3D[21]);
-            g.DrawLine(pen, point3D[21], point3D[22]);
-            g.DrawLine(pen, point3D[22], point3D[23]);
-            g.DrawLine(pen, point3D[23], point3D[20]);
+            for (int i = 0; i < 6; i++)
+            {
+                g.DrawLines(pen, FaceCube(point3D, i));
+            }
 
             g.Dispose(); //Clean-up
 
             return img;
+        }
+
+        public PointF[] FaceCube(PointF[] verts, int index)
+        {
+            var values = verts.Skip(index * 4).Take(4).ToList();
+            values.Add(verts[index * 4]);
+            return values.ToArray();
         }
 
         public static Math3D.Point3D[] fillCubeVertices(int width, int height, int depth)
