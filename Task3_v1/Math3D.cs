@@ -21,6 +21,20 @@ namespace Task3_v1
                 Z = z;
             }
 
+            public Point3D(double x, double y, double z)
+            {
+                X = (int)x;
+                Y = (int)y;
+                Z = (int)z;
+            }
+
+            public Point3D(decimal x, decimal y, decimal z)
+            {
+                X = (int)x;
+                Y = (int)y;
+                Z = (int)z;
+            }
+
             public Point3D()
             {
             }
@@ -28,6 +42,33 @@ namespace Task3_v1
             public override string ToString()
             {
                 return "(" + X + ", " + Y + ", " + Z + ")";
+            }
+
+            public Point To2D()
+            {
+                return new Point(this.X + this.Y, this.Z + this.Y);
+            }
+        }
+
+        internal class Line3D
+        {
+            public Point3D Point1;
+            public Point3D Point2;
+
+            public Line3D(Math3D.Point3D point1, Math3D.Point3D point2)
+            {
+                Point1 = point1;
+                Point2 = point2;
+            }
+
+            public double GetSide()
+            {
+                return Math.Sqrt(Math.Pow(Point2.X - Point1.X, 2) + Math.Pow(Point2.Y - Point1.Y, 2) + Math.Pow(Point2.Z - Point1.Z, 2));
+            }
+
+            public Math3D.Point3D GetVector3D()
+            {
+                return new Math3D.Point3D(Point2.X - Point1.X, Point2.Y - Point1.Y, Point2.Z - Point1.Z);
             }
         }
 
@@ -101,6 +142,13 @@ namespace Task3_v1
             return points3D;
         }
 
+        public static Point3D Move(Point3D point3D, Point drawOrigin)
+        {
+            point3D.X += drawOrigin.X;
+            point3D.Y += drawOrigin.Y;
+            return point3D;
+        }
+
         //These are to make the above functions workable with arrays of 3D points
         public static Point3D[] RotateX(Point3D[] points3D, double degrees)
         {
@@ -140,13 +188,47 @@ namespace Task3_v1
 
         public static Point3D[] Move(Point3D[] points3D, Point drawOrigin)
         {
-            foreach (var t in points3D)
+            for (var i = 0; i < points3D.Length; i++)
             {
-                t.X += drawOrigin.X;
-                t.Y += drawOrigin.Y;
+                points3D[i] = Move(points3D[i], drawOrigin);
             }
 
             return points3D;
+        }
+
+        public static Line3D RotateX(Line3D line3D, double degrees)
+        {
+            line3D.Point1 = RotateX(line3D.Point1, degrees);
+            line3D.Point2 = RotateX(line3D.Point2, degrees);
+            return line3D;
+        }
+
+        public static Line3D RotateY(Line3D line3D, double degrees)
+        {
+            line3D.Point1 = RotateY(line3D.Point1, degrees);
+            line3D.Point2 = RotateY(line3D.Point2, degrees);
+            return line3D;
+        }
+
+        public static Line3D RotateZ(Line3D line3D, double degrees)
+        {
+            line3D.Point1 = RotateZ(line3D.Point1, degrees);
+            line3D.Point2 = RotateZ(line3D.Point2, degrees);
+            return line3D;
+        }
+
+        public static Line3D Translate(Line3D line3D, Point3D oldOrigin, Point3D newOrigin)
+        {
+            line3D.Point1 = Translate(line3D.Point1, oldOrigin, newOrigin);
+            line3D.Point2 = Translate(line3D.Point2, oldOrigin, newOrigin);
+            return line3D;
+        }
+
+        public static Line3D Move(Line3D line3D, Point drawOrigin)
+        {
+            line3D.Point1 = Move(line3D.Point1, drawOrigin);
+            line3D.Point2 = Move(line3D.Point2, drawOrigin);
+            return line3D;
         }
     }
 }
