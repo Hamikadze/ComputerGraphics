@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Task5_v2
+namespace Task3_v1
 {
     internal class Math3D
     {

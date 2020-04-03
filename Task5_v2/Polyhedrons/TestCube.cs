@@ -9,30 +9,15 @@ namespace Task5_v2
 {
     internal class TestCube : Polyhedron
     {
-        public TestCube(int side) : base(side)
-        {
-            width = side;
-            height = side;
-            depth = side;
-            Origin = new Math3D.Point3D(width / 2, height / 2, depth / 2);
-
-            pen = Pens.Blue;
-        }
+        public override Pen pen { get; set; } = Pens.Blue;
+        public override string Name { get; set; } = "Прямоугольник";
 
         public TestCube(int side, Math3D.Point3D origin) : base(side, origin)
         {
             width = side;
             height = side;
             depth = side;
-            Origin = origin;
-        }
-
-        public TestCube(int Width, int Height, int Depth) : base(Width, Height, Depth)
-        {
-            width = Width;
-            height = Height;
-            depth = Depth;
-            Origin = new Math3D.Point3D(width / 2, height / 2, depth / 2);
+            Origin = new Math3D.Point3D(origin.X, origin.Y, 0);
         }
 
         public TestCube(int Width, int Height, int Depth, Math3D.Point3D origin) : base(Width, Height, Depth, origin)
@@ -40,10 +25,10 @@ namespace Task5_v2
             width = Width;
             height = Height;
             depth = Depth;
-            Origin = origin;
+            Origin = new Math3D.Point3D(origin.X, origin.Y, 0);
         }
 
-        public override Surface[] fillVertices(int width, int height, int depth)
+        public override Surface[] FillVertices(int width, int height, int depth)
         {
             var verts = new List<Surface>()
             {

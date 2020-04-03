@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Task3_v1;
+using Task3_v1.Polyhedrons;
 
 namespace Task5_v2
 {
@@ -23,11 +25,7 @@ namespace Task5_v2
 
         private Polyhedron[] polyhedrons(int size, Math3D.Point3D origin) => new Polyhedron[]
             {
-                new TestTriangle(size,origin),
-                new TestCube(size,origin),
-                new Pyramid(size,origin),
                 new Cube(size,origin),
-                new SandClock(size,origin)
             };
 
         private List<Tuple<NumericUpDown, TrackBar>> _controlsLink;
@@ -140,10 +138,7 @@ namespace Task5_v2
                 new Tuple<NumericUpDown, TrackBar>(numericUpDownZ, tZ) };
             FigureSizeDefault = pictureBoxMain.Height / 3;
             DrawOriginDefault = new Point(pictureBoxMain.Width / 2, pictureBoxMain.Height / 2);
-            figures = new List<Figure>() {
-                new Figure(new TestCube(FigureSizeDefault, OriginPoints), DrawOriginDefault),
-                new Figure(new SandClock(FigureSizeDefault, OriginPoints), DrawOriginDefault)
-            };
+            figures = new List<Figure>() { };
             timer1.Start();
             contextMenuStripFigures_Closing(this, null);
         }

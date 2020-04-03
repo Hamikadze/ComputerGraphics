@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,28 +9,15 @@ namespace Task5_v2
 {
     internal class SandClock : Polyhedron
     {
-        public SandClock(int side) : base(side)
-        {
-            width = side;
-            height = side;
-            depth = side;
-            Origin = new Math3D.Point3D(width / 2, height / 2, depth / 2);
-        }
+        public override Pen pen { get; set; } = Pens.Salmon;
+        public override string Name { get; set; } = "Песочные часы";
 
         public SandClock(int side, Math3D.Point3D origin) : base(side, origin)
         {
             width = side;
             height = side;
             depth = side;
-            Origin = origin;
-        }
-
-        public SandClock(int Width, int Height, int Depth) : base(Width, Height, Depth)
-        {
-            width = Width;
-            height = Height;
-            depth = Depth;
-            Origin = new Math3D.Point3D(width / 2, height / 2, depth / 2);
+            Origin = new Math3D.Point3D(origin.X, origin.Y, 0);
         }
 
         public SandClock(int Width, int Height, int Depth, Math3D.Point3D origin) : base(Width, Height, Depth, origin)
@@ -37,10 +25,10 @@ namespace Task5_v2
             width = Width;
             height = Height;
             depth = Depth;
-            Origin = origin;
+            Origin = new Math3D.Point3D(origin.X, origin.Y, 0);
         }
 
-        public override Surface[] fillVertices(int width, int height, int depth)
+        public override Surface[] FillVertices(int width, int height, int depth)
         {
             var verts = new List<Surface>()
             {
@@ -82,9 +70,9 @@ namespace Task5_v2
 
                 //front face
                 new Surface(new []{
-                new Math3D.Point3D(0, 0, 0),
+                new Math3D.Point3D(0, height, 0),
                 new Math3D.Point3D(width / 2, height/2, depth / 2),
-                new Math3D.Point3D(width, 0, 0),}
+                new Math3D.Point3D(width, height, 0),}
                 ),
 
                 //back face
