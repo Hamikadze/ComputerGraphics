@@ -80,6 +80,7 @@
             this.pictureBoxMain.Size = new System.Drawing.Size(696, 653);
             this.pictureBoxMain.TabIndex = 0;
             this.pictureBoxMain.TabStop = false;
+            this.pictureBoxMain.Click += new System.EventHandler(this.pictureBoxMain_Click);
             this.pictureBoxMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMain_MouseClick);
             // 
             // GroupBoxControl

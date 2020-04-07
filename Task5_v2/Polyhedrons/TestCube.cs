@@ -9,7 +9,7 @@ namespace Task5_v2
 {
     internal class TestCube : Polyhedron
     {
-        public override Pen pen { get; set; } = Pens.Blue;
+        public override Pen pen { get; set; } = Pens.MistyRose;
         public override string Name { get; set; } = "Прямоугольник";
 
         public TestCube(int side, Math3D.Point3D origin) : base(side, origin)

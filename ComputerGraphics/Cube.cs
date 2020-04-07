@@ -98,6 +98,8 @@ namespace ComputerGraphics
 
         public Bitmap drawCube(Bitmap img, Point drawOrigin)
         {
+            var degrees = 35;
+            double cDegrees = (Math.PI * degrees) / 180.0;
             //FRONT FACE
             //Top Left - 7
             //Top Right - 4
@@ -124,8 +126,6 @@ namespace ComputerGraphics
             cubePoints = Math3D.Translate(cubePoints, point0, cubeOrigin);
 
             //Convert 3D Points to 2D
-            var degrees = 35;
-            double cDegrees = (Math.PI * degrees) / 180.0;
             for (int i = 0; i < point3D.Length; i++)
             {
                 var vec = cubePoints[i];
@@ -135,7 +135,7 @@ namespace ComputerGraphics
             }
 
             var g = Graphics.FromImage(img);
-            Pen pen = new Pen(Color.Black, 1);
+            Pen pen = new Pen(Color.Red, 2);
 
             for (int i = 0; i < 6; i++)
             {
@@ -147,6 +147,8 @@ namespace ComputerGraphics
                 g.DrawLines(pen, FaceCube(point3D, i));
             }
 
+            Cords cords = new Cords(img.Width / 2, img.Height / 2, 0);
+            cords.Draw(img);
             g.Dispose(); //Clean-up
 
             return img;

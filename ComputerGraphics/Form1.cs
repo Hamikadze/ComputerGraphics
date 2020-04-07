@@ -46,10 +46,9 @@ namespace ComputerGraphics
 
             //Cube is positioned based on center
             Point origin = new Point(point.X, point.Y);
-            Cords cords = new Cords(pictureBoxMain.Width / 2, pictureBoxMain.Height / 2, 0);
             Bitmap img = new Bitmap(pictureBoxMain.Width, pictureBoxMain.Height);
-            pictureBoxMain.Image = cords.Draw(img);
-            cube.drawCube(img, origin);
+
+            pictureBoxMain.Image = cube.drawCube(img, origin);
         }
 
         private void btnReset_Click(object sender, EventArgs e)

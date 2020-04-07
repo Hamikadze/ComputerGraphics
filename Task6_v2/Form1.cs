@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Task6_v2;
+using Task6_v2.Polyhedrons;
 
 namespace Task5_v2
 {
@@ -23,11 +25,8 @@ namespace Task5_v2
 
         private Polyhedron[] polyhedrons(int size, Math3D.Point3D origin) => new Polyhedron[]
             {
-                new TestTriangle(size,origin),
-                new TestCube(size,origin),
                 new Pyramid(size,origin),
                 new Cube(size,origin),
-                new SandClock(size,origin)
             };
 
         private List<Tuple<NumericUpDown, TrackBar>> _controlsLink;
@@ -124,7 +123,7 @@ namespace Task5_v2
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Z_Buffer zBuffer = new Z_Buffer(figures);
+            MatrixBuffer zBuffer = new MatrixBuffer(figures);
             pictureBoxMain.Image = zBuffer.render(pictureBoxMain.Size, new Math3D.Point3D(tX.Value, tY.Value, tZ.Value));
         }
 
@@ -141,8 +140,7 @@ namespace Task5_v2
             FigureSizeDefault = pictureBoxMain.Height / 3;
             DrawOriginDefault = new Point(pictureBoxMain.Width / 2, pictureBoxMain.Height / 2);
             figures = new List<Figure>() {
-                new Figure(new TestTriangle(FigureSizeDefault, OriginPoints), DrawOriginDefault),
-                new Figure(new Cube(FigureSizeDefault, OriginPoints), DrawOriginDefault)
+                new Figure(new SandClock(FigureSizeDefault, OriginPoints), DrawOriginDefault)
             };
             timer1.Start();
             contextMenuStripFigures_Closing(this, null);
@@ -163,6 +161,10 @@ namespace Task5_v2
             numericUpDownXPoint.Value = figures[listBoxFigures.SelectedIndex].DrawingOrigin.X;
             numericUpDownYPoint.Value = figures[listBoxFigures.SelectedIndex].DrawingOrigin.Y;
             selectedIndex = listBoxFigures.SelectedIndex;
+        }
+
+        private void pictureBoxMain_Click(object sender, EventArgs e)
+        {
         }
     }
 }

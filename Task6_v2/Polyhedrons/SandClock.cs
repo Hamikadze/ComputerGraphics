@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Task5_v2
+namespace Task6_v2.Polyhedrons
 {
     internal class SandClock : Polyhedron
     {
-        public override Pen pen { get; set; } = Pens.BlanchedAlmond;
+        public override Color pen { get; set; } = Color.BlanchedAlmond;
         public override string Name { get; set; } = "Песочные часы";
 
         public SandClock(int side, Math3D.Point3D origin) : base(side, origin)

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace Task5_v2
+namespace Task6_v2.Polyhedrons
 {
     internal class Cube : Polyhedron
     {
-        public override Pen pen { get; set; } = Pens.Azure;
+        public override Color pen { get; set; } = Color.Azure;
         public override string Name { get; set; } = "Куб";
 
         public Cube(int side, Math3D.Point3D origin) : base(side, origin)

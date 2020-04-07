@@ -22,6 +22,13 @@ namespace ComputerGraphics
             Oy = point.Y;
         }
 
+        public Cords(Math3D.Point3D point)
+        {
+            Ox = (int)point.X;
+            Oy = (int)point.Y;
+            Oz = (int)point.Z;
+        }
+
         public Cords(int ox, int oy, int oz)
         {
             Ox = ox;
@@ -33,38 +40,35 @@ namespace ComputerGraphics
         {
             Graphics g = Graphics.FromImage(img);
             var point0 = new Point(Ox, Oy);
+            var pen = new Pen(Color.Black, 2);
             if (Ox != int.MinValue)
             {
-                var degrees = 30;
+                var degrees = 145;
                 double cDegrees = Math.PI * degrees / 180.0;
-                var x = (int)(Math.Cos(cDegrees) * (img.Width - 0));
-                var y = (int)(Math.Sin(cDegrees) * (img.Width + 0) + Oy);
-                var point1 = new Point(x, y);
-                g.DrawLine(Pens.Black, point0, point1);
+                var x = (Ox - Math.Cos(cDegrees) * img.Width / 2);
+                var y = (Oy + Math.Sin(cDegrees) * img.Height / 2);
+                var point1 = new Point((int)x, (int)y);
+                g.DrawLine(pen, point0, point1);
                 g = DrawString(g, "X", new Point(point1.X - 16, point1.Y - 32));
                 Ox3D = new Math3D.Point3D(x, y, 0);
             }
 
             if (Oy != int.MinValue)
             {
-                var degrees = 30;
+                var degrees = 35;
                 double cDegrees = Math.PI * degrees / 180.0;
-                var x = (int)(Math.Cos(cDegrees) * (Ox - 0));
-                var y = (int)(Math.Sin(cDegrees) * (Ox + 0) + img.Height);
-                var point1 = new Point(x, y);
-                g.DrawLine(Pens.Black, point0, point1);
+                var x = (Ox - Math.Cos(cDegrees) * img.Width / 2);
+                var y = (Oy + Math.Sin(cDegrees) * img.Height / 2);
+                var point1 = new Point((int)x, (int)y);
+                g.DrawLine(pen, point0, point1);
                 g = DrawString(g, "Y", new Point(point1.X, point1.Y - 32));
                 Oy3D = new Math3D.Point3D(x, y, 0);
             }
 
             if (Oz != int.MinValue)
             {
-                var degrees = 30;
-                double cDegrees = Math.PI * degrees / 180.0;
-                var x = (int)(Math.Cos(cDegrees) * (Ox - img.Height));
-                var y = (int)(Math.Sin(cDegrees) * (Ox + img.Height) + Oy);
-                var point1 = new Point(x, y);
-                g.DrawLine(Pens.Black, point0, point1);
+                var point1 = new Point(Ox, Oy - img.Height / 2);
+                g.DrawLine(pen, point0, point1);
                 g = DrawString(g, "Z", new Point(point1.X - 16, point1.Y));
                 Oz3D = new Math3D.Point3D(0, 0, 10);
             }
